@@ -32,11 +32,11 @@ int main()
 	else
 		printf("Это високосный год\n");
 
-	printf("%d.%d.%d %d:%d:%d\n", Data_Time.day, Data_Time.month, Data_Time.year, Data_Time.hour, Data_Time.minute, Data_Time.second);
-	printf("%d.%d.%d %d:%d:%d\n", Today_Time.day, Today_Time.month, Today_Time.year, Today_Time.hour, Today_Time.minute, Today_Time.second);
+	printf("Введенная дата: %d.%d.%d %d:%d:%d\n", Data_Time.day, Data_Time.month, Data_Time.year, Data_Time.hour, Data_Time.minute, Data_Time.second);
+	printf("Сегодняшняя дата: %d.%d.%d %d:%d:%d\n", Today_Time.day, Today_Time.month, Today_Time.year, Today_Time.hour, Today_Time.minute, Today_Time.second);
 
 	long long int difference = DataDifference(Data_Time, Today_Time);
-	printf("Различается в %lld секунд \n в %lld минут \n в %lld часов \n в %lld дней \n в %lld годиков", 
+	printf("Различаются в %lld секунд \n в %lld минут \n в %lld часов \n в %lld дней \n в %lld годиков", 
 				difference, difference/60, difference/60/60, difference/60/60/24, difference/60/60/24/365);
 
 	return 0;
