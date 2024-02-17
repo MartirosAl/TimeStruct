@@ -14,44 +14,85 @@ bool IsLeapYear(unsigned int year)
    return false;
 }
 
-long long int DataDifference(struct TimeData Data_Time_1, struct TimeData Data_Time_2)
+void DataDifference(struct TimeData* Data_Time_1, struct TimeData* Data_Time_2,struct TimeData* Data_Time_Dif)
 {
-   int yearstoday1 = FromYearsToDays(Data_Time_1.year);
-   int yearstoday2 = FromYearsToDays(Data_Time_2.year);
+   Data_Time_Dif->year = Data_Time_1->year - Data_Time_2->year - 1;
+   Data_Time_Dif->month = (12 - Data_Time_1->month) + (12 - Data_Time_2->month) + (Data_Time_Dif->year * 12);
+   Data_Time_Dif->day = (FromMonthToDays(Data_Time_1->month) + DaysInMonth(Data_Time_1->month) - Data_Time_1->day) +
+      (FromMonthToDays(Data_Time_2->month) + DaysInMonth(Data_Time_2->month) - Data_Time_2->day) +
+      (CountLeapYears(WhichDateIsGreater(&Data_Time_1, &Data_Time_2) == 1 ? Data_Time_1->year : Data_Time_2->year,
+                      WhichDateIsGreater(&Data_Time_1, &Data_Time_2) == 1 ? Data_Time_2->year : Data_Time_1->year));
+   Data_Time_Dif->hour = abs(Data_Time_1->hour - Data_Time_2->hour);
+   Data_Time_Dif->minute = abs(Data_Time_1->minute - Data_Time_2->minute);
+   Data_Time_Dif->second = abs(Data_Time_1->second - Data_Time_2->second);
+}
 
-   int monthinday1 = FromMonthsToDays(Data_Time_1.month) - (IsLeapYear(Data_Time_1.year) == 0 ? 2 : 1);
-   int monthinday2 = FromMonthsToDays(Data_Time_2.month) - (IsLeapYear(Data_Time_2.year) == 0 ? 2 : 1);
-   
-   return (abs(yearstoday1 - yearstoday2)*24*60*60 + 
-       abs(monthinday1 - monthinday2) *24*60*60 + 
-       abs(Data_Time_1.day - Data_Time_2.day) *24*60*60 + 
-       abs(Data_Time_1.hour - Data_Time_2.hour) *60*60 + 
-       abs(Data_Time_1.minute - Data_Time_2.minute) *60 +
-       abs(Data_Time_1.second - Data_Time_2.second));
+int DaysInMonth(int month)
+{
+   if (month % 2 == 0 && month != 2 && month != 7)
+      return 30;
+   else if (month == 2)
+      return 28;
+   else if (month == 7)
+      return 31;
+   return 31;
 }
 
 int FromMonthsToDays(int month)
 {
-    int days = 0;
-    while (month != 0)
-    {
-        month -= 1;
-        days = days + month % 2 == 0 ? 31 : 30;
-        days = days + month == 7 ? 1 : 0;
-    }
-    return days;
+   int days = 0;
+   while (month != 0)
+   {
+      month -= 1;
+      days = days + month % 2 == 0 ? 31 : 30;
+      days = days + month == 7 ? 1 : 0;
+   }
+   return days;
 }
 
-unsigned int FromYearsToDays(int year)
+int CountLeapYears(int year_big, int year_small)
 {
-    int days = 0;
-    while (year > 1)
-    {
-        year -= 1;
-        if (IsLeapYear(year))
-            days += 366;
-        else
-            days += 365;
-    }
-    return days;
+   int counter = 0;
+   while (year_big > year_small)
+   {
+      if (IsLeapYear(year_small))
+         counter++;
+      year_small++;
+   }
+   return counter;
+}
+
+int WhichDateIsGreater(struct TimeData* Data_Time_1, struct TimeData* Data_Time_2)
+{
+   if (Data_Time_1->year == Data_Time_2->year)
+      if (Data_Time_1->month == Data_Time_2->month)
+         if (Data_Time_1->day == Data_Time_2->day)
+            if (Data_Time_1->hour == Data_Time_2->hour)
+               if (Data_Time_1->minute == Data_Time_2->minute)
+                  if (Data_Time_1->second == Data_Time_2->second)
+                     return 0;
+                  else if (Data_Time_1->second > Data_Time_2->second)
+                     return 1;
+                  else
+                     return 2;
+               else if (Data_Time_1->minute > Data_Time_2->minute)
+                  return 1;
+               else
+                  return 2;
+            else if (Data_Time_1->hour > Data_Time_2->hour)
+               return 1;
+            else
+               return 2;
+         else if (Data_Time_1->day > Data_Time_2->day)
+            return 1;
+         else
+            return 2;
+      else if (Data_Time_1->month > Data_Time_2->month)
+         return 1;
+      else
+         return 2;
+   else if (Data_Time_1->year > Data_Time_2->year)
+      return 1;
+   else
+      return 2;
 }

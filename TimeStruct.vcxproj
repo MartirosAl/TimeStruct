@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>17.0</VCProjectVersion>
+    <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{cecca66f-929e-434f-89b0-4aaef83e707a}</ProjectGuid>
+    <ProjectGuid>{888c4ad9-70a1-4fc9-b749-d5ad0d887145}</ProjectGuid>
     <RootNamespace>TimeStruct</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>

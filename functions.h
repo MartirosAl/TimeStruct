@@ -13,12 +13,7 @@ bool IsLeapYear(unsigned int year);
 * @brief Разница между двумя датами
 * @param Data_Time Дата #1
 * @param Today_Time Дата #2
-* @return Разница между датой #1 и датой #2 в секундах
 */
-long long int DataDifference(struct TimeData Data_Time, struct TimeData Today_Time);
+void DataDifference(struct TimeData* Data_Time_1, struct TimeData* Data_Time_2, struct TimeData* Data_Time_Dif);
 
 
-unsigned int FromMonthsToDays(int month);
-
-
-unsigned int FromYearsToDays(int year);
