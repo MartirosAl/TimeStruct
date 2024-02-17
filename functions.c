@@ -14,27 +14,44 @@ bool IsLeapYear(unsigned int year)
    return false;
 }
 
-long long int DataDifference(struct TimeData Data_Time, struct TimeData Today_Time)
+long long int DataDifference(struct TimeData Data_Time_1, struct TimeData Data_Time_2)
 {
-   int monthinday1 = 0;
-   int monthinday2 = 0;
+   int yearstoday1 = FromYearsToDays(Data_Time_1.year);
+   int yearstoday2 = FromYearsToDays(Data_Time_2.year);
 
-   while (Data_Time.month != 0)
-   {
-      Data_Time.month -= 1;
-      monthinday1 = Data_Time.month % 2 == 0 ? monthinday1 + 31 : monthinday1 + 30;
-   }
-   while (Today_Time.month != 0)
-   {
-      Today_Time.month -= 1;
-      monthinday2 = Today_Time.month % 2 == 0 ? monthinday2 + 31 : monthinday2 + 30;
-   }
+   int monthinday1 = FromMonthsToDays(Data_Time_1.month) - (IsLeapYear(Data_Time_1.year) == 0 ? 2 : 1);
+   int monthinday2 = FromMonthsToDays(Data_Time_2.month) - (IsLeapYear(Data_Time_2.year) == 0 ? 2 : 1);
+   
+   return (abs(yearstoday1 - yearstoday2)*24*60*60 + 
+       abs(monthinday1 - monthinday2) *24*60*60 + 
+       abs(Data_Time_1.day - Data_Time_2.day) *24*60*60 + 
+       abs(Data_Time_1.hour - Data_Time_2.hour) *60*60 + 
+       abs(Data_Time_1.minute - Data_Time_2.minute) *60 +
+       abs(Data_Time_1.second - Data_Time_2.second));
+}
 
-   if (Data_Time.month > 2)
-      monthinday1 = IsLeapYear == 0 ? monthinday1 - 2 : monthinday1 - 1;
-   if (Today_Time.month > 2)
-      monthinday2 = IsLeapYear == 0 ? monthinday2 - 2 : monthinday2 - 1;
+int FromMonthsToDays(int month)
+{
+    int days = 0;
+    while (month != 0)
+    {
+        month -= 1;
+        days = days + month % 2 == 0 ? 31 : 30;
+        days = days + month == 7 ? 1 : 0;
+    }
+    return days;
+}
 
-   return (abs(Data_Time.year - Today_Time.year)*365*24*60*60 + abs(monthinday1 - monthinday2)*24*60*60 + abs(Data_Time.day - Today_Time.day)*24*60*60 
-               + abs(Data_Time.hour - Today_Time.hour)*60*60 + abs(Data_Time.minute - Today_Time.minute)*60 + abs(Data_Time.second - Today_Time.second));
+unsigned int FromYearsToDays(int year)
+{
+    int days = 0;
+    while (year > 1)
+    {
+        year -= 1;
+        if (IsLeapYear(year))
+            days += 366;
+        else
+            days += 365;
+    }
+    return days;
 }

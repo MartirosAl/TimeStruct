@@ -17,3 +17,8 @@ bool IsLeapYear(unsigned int year);
 */
 long long int DataDifference(struct TimeData Data_Time, struct TimeData Today_Time);
 
+
+unsigned int FromMonthsToDays(int month);
+
+
+unsigned int FromYearsToDays(int year);
