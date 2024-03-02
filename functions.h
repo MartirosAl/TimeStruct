@@ -14,6 +14,13 @@ bool IsLeapYear(unsigned int year);
 * @param Data_Time Дата #1
 * @param Today_Time Дата #2
 */
-void DataDifference(struct TimeData* Data_Time_1, struct TimeData* Data_Time_2, struct TimeData* Data_Time_Dif);
+void DataDifference(TimeData* Data_Time_1, TimeData* Data_Time_2, TimeData* Data_Time_Dif);
 
 
+int DaysInMonth(int month);
+
+int FromMonthsToDays(int month);
+
+int CountLeapYears(int year_big, int year_small);
+
+int WhichDateIsGreater(TimeData* Data_Time_1, TimeData* Data_Time_2);

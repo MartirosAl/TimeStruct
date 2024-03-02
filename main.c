@@ -1,21 +1,26 @@
 #include <stdio.h>
 #include "functions.h"
+#include <stdlib.h>
 
 int main()
 {
-	system("chcp 1251"); //Русский язык
-	system("cls");
 
 	//Структуры для даты и времени
-	struct TimeData* Data_Time_1 = malloc(sizeof(struct TimeData)); 
-	struct TimeData* Data_Time_2 = malloc(sizeof(struct TimeData));
-	struct TimeData* Data_Time_Dif = malloc(sizeof(struct TimeData));
+	TimeData* Data_Time_1 = malloc(sizeof(TimeData));
+	if (!Data_Time_1)
+		return 0;
+	TimeData* Data_Time_2 = malloc(sizeof(TimeData));
+	if (!Data_Time_2)
+		return 0;
+	TimeData* Data_Time_Dif = malloc(sizeof(TimeData));
+	if (!Data_Time_Dif)
+		return 0;
 
-	printf("Enter first date and time in format day.month.year hours:minuts:seconds: "); //Ввод данных 
-	scanf_s("%d.%d.%d %d:%d:%d", &Data_Time_1->day, &Data_Time_1->month, &Data_Time_1->year, &Data_Time_1->hour, &Data_Time_1->minute, &Data_Time_1->second);
+	printf("Enter first date and time in format day.month.year hours:minutes:seconds: "); //Ввод данных 
+	scanf_s("%u.%u.%u %u:%u:%u", &Data_Time_1->day, &Data_Time_1->month, &Data_Time_1->year, &Data_Time_1->hour, &Data_Time_1->minute, &Data_Time_1->second);
 
-	printf("Enter second date and time in format day.month.year hours:minuts:seconds: "); //Ввод данных 
-	scanf_s("%d.%d.%d %d:%d:%d", &Data_Time_2->day, &Data_Time_2->month, &Data_Time_2->year, &Data_Time_2->hour, &Data_Time_2->minute, &Data_Time_2->second);
+	printf("Enter second date and time in format day.month.year hours:minutes:seconds: "); //Ввод данных 
+	scanf_s("%u.%u.%u %u:%u:%u", &Data_Time_2->day, &Data_Time_2->month, &Data_Time_2->year, &Data_Time_2->hour, &Data_Time_2->minute, &Data_Time_2->second);
 
 	//Проверки на правильность введенных данных 
 	if (Data_Time_1->month > 12 || (Data_Time_1->month % 2 == 0 ? Data_Time_1->day > 31 : Data_Time_1->day > 30) ||
@@ -60,8 +65,12 @@ int main()
 	printf("First date entered: %d.%d.%d %d:%d:%d\n", Data_Time_1->day, Data_Time_1->month, Data_Time_1->year, Data_Time_1->hour, Data_Time_1->minute, Data_Time_1->second);
 	printf("Second date entered: %d.%d.%d %d:%d:%d\n", Data_Time_2->day, Data_Time_2->month, Data_Time_2->year, Data_Time_2->hour, Data_Time_2->minute, Data_Time_2->second);
 
-	DataDifference(&Data_Time_1, &Data_Time_2, &Data_Time_Dif);
-	printf("%d ");
+	DataDifference(Data_Time_1, Data_Time_2, Data_Time_Dif);
+	printf("%u years %u months %u days %d hours %u minutes %u seconds", Data_Time_Dif->year, Data_Time_Dif->month, Data_Time_Dif->day, Data_Time_Dif->hour, Data_Time_Dif->minute, Data_Time_Dif->second);
+	
+	free(Data_Time_1);
+	free(Data_Time_2);
+	free(Data_Time_Dif);
 
 	return 0;
 }

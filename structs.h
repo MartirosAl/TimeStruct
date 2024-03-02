@@ -1,11 +1,11 @@
 #pragma once
 
-struct TimeData
+typedef struct TimeData
 {	
-	unsigned int day;
-	unsigned int month;
-	unsigned int year;
-	unsigned int hour;
-	unsigned int minute;
-	unsigned int second;
-};
+	int day;
+	int month;
+	int year;
+	int hour;
+	int minute;
+	int second;
+}TimeData;
