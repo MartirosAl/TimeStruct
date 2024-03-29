@@ -65,7 +65,8 @@ int main()
 	printf("First date entered: %d.%d.%d %d:%d:%d\n", Data_Time_1->day, Data_Time_1->month, Data_Time_1->year, Data_Time_1->hour, Data_Time_1->minute, Data_Time_1->second);
 	printf("Second date entered: %d.%d.%d %d:%d:%d\n", Data_Time_2->day, Data_Time_2->month, Data_Time_2->year, Data_Time_2->hour, Data_Time_2->minute, Data_Time_2->second);
 
-	DataDifference(Data_Time_1, Data_Time_2, Data_Time_Dif);
+	printf("%d %d\n", WhichDateIsGreater(Data_Time_1, Data_Time_2), WhichDateIsGreater(Data_Time_2, Data_Time_1));
+	DataDifference((WhichDateIsGreater(Data_Time_1, Data_Time_2) == 0 ? Data_Time_1 : Data_Time_2), (WhichDateIsGreater(Data_Time_2, Data_Time_1) == 0 ? Data_Time_1 : Data_Time_2), Data_Time_Dif);
 	printf("%u years %u months %u days %d hours %u minutes %u seconds", Data_Time_Dif->year, Data_Time_Dif->month, Data_Time_Dif->day, Data_Time_Dif->hour, Data_Time_Dif->minute, Data_Time_Dif->second);
 	
 	free(Data_Time_1);
