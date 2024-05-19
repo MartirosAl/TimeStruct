@@ -16,71 +16,60 @@ bool IsLeapYear(unsigned int year)
 
 void DataDifference(TimeData* Data_Time_1, TimeData* Data_Time_2, TimeData* Data_Time_Dif)
 {
-   //Yandere hello
-   Data_Time_Dif->second = Data_Time_1->second - Data_Time_2->second;
+   Data_Time_Dif->second = 0;
+   Data_Time_Dif->minute = 0;
+   Data_Time_Dif->hour = 0;
+   Data_Time_Dif->day = 0;
+   Data_Time_Dif->month = 0;
+   Data_Time_Dif->year = 0;
 
-   Data_Time_Dif->minute = Data_Time_1->minute - Data_Time_2->minute;
-   if (Data_Time_Dif->second < 0)
+
+   TimeData* Bigger_Data = !(WhichDateIsGreater(Data_Time_1, Data_Time_2)) ? Data_Time_1 : Data_Time_2;
+   TimeData* Lower_Data = WhichDateIsGreater(Data_Time_1, Data_Time_2) ? Data_Time_1 : Data_Time_2;
+
+   if (Bigger_Data->second - Lower_Data->second >= 0)
+      Data_Time_Dif->second += Bigger_Data->second - Lower_Data->second;
+   else
    {
-      Data_Time_Dif->second = abs(Data_Time_Dif->second);
-      if (Data_Time_Dif->minute != 0)
-         Data_Time_Dif->minute = Data_Time_Dif->minute + Data_Time_Dif->minute < 0 ? 1 : -1;
-      else if (Data_Time_Dif->hour != 0)
-         Data_Time_Dif->hour = Data_Time_Dif->hour + Data_Time_Dif->hour < 0 ? 1 : -1;
-      else if (Data_Time_Dif->day != 0)
-         Data_Time_Dif->day = Data_Time_Dif->day + Data_Time_Dif->day < 0 ? 1 : -1;
-      else if (Data_Time_Dif->month != 0)
-         Data_Time_Dif->month = Data_Time_Dif->month + Data_Time_Dif->month < 0 ? 1 : -1;
-      else
-         Data_Time_Dif->year = Data_Time_Dif->year - 1;
+      Data_Time_Dif->minute--;
+      Data_Time_Dif->second += Lower_Data->second - Bigger_Data->second;
    }
 
-   Data_Time_Dif->hour = Data_Time_1->hour - Data_Time_2->hour;
-   if (Data_Time_Dif->minute < 0)
+   if (Bigger_Data->minute - Lower_Data->minute + Data_Time_Dif->minute >= 0)
+      Data_Time_Dif->minute += Bigger_Data->minute - Lower_Data->minute;
+   else
    {
-      Data_Time_Dif->minute = abs(Data_Time_Dif->minute);
-      if (Data_Time_Dif->hour != 0)
-         Data_Time_Dif->hour = Data_Time_Dif->hour + Data_Time_Dif->hour < 0 ? 1 : -1;
-      else if (Data_Time_Dif->day != 0)
-         Data_Time_Dif->day = Data_Time_Dif->day + Data_Time_Dif->day < 0 ? 1 : -1;
-      else if (Data_Time_Dif->month != 0)
-         Data_Time_Dif->month = Data_Time_Dif->month + Data_Time_Dif->month < 0 ? 1 : -1;
-      else
-         Data_Time_Dif->year = Data_Time_Dif->year - 1;
+      Data_Time_Dif->hour--;
+      Data_Time_Dif->minute += 60 - (Lower_Data->minute - Lower_Data->minute);
    }
 
-   Data_Time_Dif->day = Data_Time_1->day - Data_Time_2->day;
-   if (Data_Time_Dif->hour < 0)
+   if (Bigger_Data->hour - Lower_Data->hour + Data_Time_Dif->hour >= 0)
+      Data_Time_Dif->hour += Bigger_Data->hour - Lower_Data->hour;
+   else
    {
-      Data_Time_Dif->hour = abs(Data_Time_Dif->hour);
-      if (Data_Time_Dif->day != 0)
-         Data_Time_Dif->day = Data_Time_Dif->day + Data_Time_Dif->day < 0 ? 1 : -1;
-      else if (Data_Time_Dif->month != 0)
-         Data_Time_Dif->month = Data_Time_Dif->month + Data_Time_Dif->month < 0 ? 1 : -1;
-      else
-         Data_Time_Dif->year = Data_Time_Dif->year - 1;
+      Data_Time_Dif->day--;
+      Data_Time_Dif->hour += 24 - (Lower_Data->hour - Bigger_Data->hour);
    }
 
-   Data_Time_Dif->month = Data_Time_1->month - Data_Time_2->month;
-   if (Data_Time_Dif->day < 0)
+   if (Bigger_Data->day - Lower_Data->day + Data_Time_Dif->day >= 0)
+      Data_Time_Dif->day += Bigger_Data->day - Lower_Data->day;
+   else
    {
-      Data_Time_Dif->day = abs(Data_Time_Dif->day);
-      if (Data_Time_Dif->month != 0)
-         Data_Time_Dif->month = Data_Time_Dif->month + Data_Time_Dif->month < 0 ? 1 : -1;
-      else
-         Data_Time_Dif->year = Data_Time_Dif->year - 1;
+      Data_Time_Dif->month--;
+      Data_Time_Dif->day += DaysInMonth(Lower_Data->month) + ((Lower_Data->month == 2) ? IsLeapYear(Lower_Data->year) : 0) - (Lower_Data->day - Bigger_Data->day);
    }
 
-   Data_Time_Dif->year = Data_Time_1->year - Data_Time_2->year;
-   if (Data_Time_Dif->month < 0)
+   if (Bigger_Data->month - Lower_Data->month + Data_Time_Dif->month >= 0)
+      Data_Time_Dif->month += Bigger_Data->month - Lower_Data->month;
+   else
    {
-      Data_Time_Dif->month = abs(Data_Time_Dif->month);
-      Data_Time_Dif->year = Data_Time_Dif->year - 1;
+      Data_Time_Dif->year--;
+      Data_Time_Dif->month += 12 - (Lower_Data->month - Bigger_Data->month);
    }
-   
 
-   
+   Data_Time_Dif->year += Bigger_Data->year - Lower_Data->year;
 }
+
 
 int DaysInMonth(int month)
 {
@@ -94,36 +83,6 @@ int DaysInMonth(int month)
       return 28;
    }
 
-}
-
-int FromMonthsToDays(int month)
-{
-   int days = 0;
-   while (month != 0)
-   {
-      month -= 1;
-      days = days + DaysInMonth(month);
-   }
-   return days;
-}
-
-int CountLeapYears(int year_big, int year_small)
-{
-   int counter = 0;
-   int temp;
-   if (year_big < year_small)
-   {
-      temp = year_small;
-      year_small = year_big;
-      year_big = temp;
-   }
-   while (year_big > year_small)
-   {
-      if (IsLeapYear(year_small))
-         counter++;
-      year_small++;
-   }
-   return counter;
 }
 
 int WhichDateIsGreater(TimeData* Data_Time_1, TimeData* Data_Time_2)
@@ -160,3 +119,34 @@ int WhichDateIsGreater(TimeData* Data_Time_1, TimeData* Data_Time_2)
    else
       return 1;
 }
+
+//int FromMonthsToDays(int month)
+//{
+//   int days = 0;
+//   while (month != 0)
+//   {
+//      month -= 1;
+//      days = days + DaysInMonth(month);
+//   }
+//   return days;
+//}
+
+//int CountLeapYears(int year_big, int year_small)
+//{
+//   int counter = 0;
+//   int temp;
+//   if (year_big < year_small)
+//   {
+//      temp = year_small;
+//      year_small = year_big;
+//      year_big = temp;
+//   }
+//   while (year_big > year_small)
+//   {
+//      if (IsLeapYear(year_small))
+//         counter++;
+//      year_small++;
+//   }
+//   return counter;
+//}
+
